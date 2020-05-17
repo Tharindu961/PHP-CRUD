@@ -13,8 +13,52 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
+	<?php require_once 'process.php'; ?>
+	<div class="container">
+	<?php
+		$mysqli = new mysqli('localhost', 'root', '','crud') or die(mysqli_error(mysqli));
+		$result = $mysqli->query("SELECT * FROM data") or die($mysqli->error);
+		//pre_r($result);
+		//pre_r($result->fetch_assoc());
+		?>
+
+		<div class="row justify-content-center">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Location</th>
+						<th colspan="2">Action</th>
+					</tr>
+				</thead>
+			
+
+		<?php
+			while ($row = $result->fetch_assoc()): ?> 
+				<tr>
+					<td><?php echo $row['name']; ?></td>
+					<td><?php echo $row['location']; ?></td>
+					<td>
+						<a href="index.php?edit=<?php echo $row['id']; ?>" 
+							class="btn btn-info">Edit</a>
+						<a href="process.php?delete=<?php echo $row['id']; ?>"
+							class="btn btn-danger">Delete</a>
+					</td>
+				</tr>
+			<?php endwhile; ?>
+			</table>
+		</div>
+		<?php
+
+		function pre_r( $array ) {
+			echo '<pre>';
+			print_r($array);
+			echo '</pre>';
+		}
+
+	?>
 	<div class="row justify-content-center">
-	<form action="" method="POST">
+	<form action="process.php" method="POST">
 		<div class="form-group">
 		<label>Name</label>	
 		<input type="text" name="name" class="form-control" value="Enter your name">
@@ -28,6 +72,6 @@
 		</div>
 	</form>
 	</div>
-
+	</div>
 </body>
 </html>
